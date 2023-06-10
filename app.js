@@ -99,29 +99,30 @@ app.post("/ussd",(req,res)=>{
         // welcome console
         getUsers(phoneNumber)
         .then((response)=>{
-            if(response.length === 0){
+            if(response === null){
                 const user= new Users({
                     phoneNumber: phoneNumber,
                     dateCreated:date
                 })
                 user.save()
             }
-            const message = new Welcome({
-                consoleScreen: "welcome console",
-                phoneNumber: phoneNumber,
-                dateCreated:date
-            })
-            message.save();
-            
-            response = `CON Welcome to media services. 
-            Please select an option
-            1. Breaking news Subscription
-            2. Airtime Top up
-            3. Skiza Subscription`;
         })
         .catch((error)=>{
-            res.send(error);
+            console.log(error);
         })
+
+        const message = new Welcome({
+            consoleScreen: "welcome console",
+            phoneNumber: phoneNumber,
+            dateCreated:date
+        })
+        message.save();
+        
+        response = `CON Welcome to media services. 
+        Please select an option
+        1. Breaking news Subscription
+        2. Airtime Top up
+        3. Skiza Subscription`;
     }
     if(text == '1') {
         // breaking news console
