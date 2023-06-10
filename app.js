@@ -106,22 +106,22 @@ app.post("/ussd",(req,res)=>{
                 })
                 user.save()
             }
+            const message = new Welcome({
+                consoleScreen: "welcome console",
+                phoneNumber: phoneNumber,
+                dateCreated:date
+            })
+            message.save();
+            
+            response = `CON Welcome to media services. 
+            Please select an option
+            1. Breaking news Subscription
+            2. Airtime Top up
+            3. Skiza Subscription`;
         })
-        .catch(()=>{
-            res.send("There was an error in user creation! ")
+        .catch((error)=>{
+            res.send(error);
         })
-        const message = new Welcome({
-            consoleScreen: "welcome console",
-            phoneNumber: phoneNumber,
-            dateCreated:date
-        })
-        message.save();
-        
-        response = `CON Welcome to media services. 
-        Please select an option
-        1. Breaking news Subscription
-        2. Airtime Top up
-        3. Skiza Subscription`;
     }
     if(text == '1') {
         // breaking news console
