@@ -7,43 +7,67 @@ const mongoose = require("mongoose");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-mongoose.connect(process.env.DB_CONNECTION)
+mongoose.connect(process.env.DB_CONNECTION);
+
+const day = new Date();
+const options = {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
+
+const date = day.toLocaleDateString("en-US", options);
+
 
 const welcomeSchema = new mongoose.Schema({
     consoleScreen: String,
-    phoneNumber: String
+    phoneNumber: String,
+    dateCreated: String
 });
 const breakingNewsSchema = new mongoose.Schema({
     consoleScreen: String,
-    phoneNumber: String
+    phoneNumber: String,
+    dateCreated: String
 });
 const airtimeSchema = new mongoose.Schema({
     consoleScreen: String,
-    phoneNumber: String
+    phoneNumber: String,
+    dateCreated: String
 });
 const skizaSchema = new mongoose.Schema({
     consoleScreen: String,
-    phoneNumber: String
+    phoneNumber: String,
+    dateCreated: String
 });
 const breakingNewsSubscribe= new mongoose.Schema({
     consoleScreen: String,
-    phoneNumber: String
+    phoneNumber: String,
+    dateCreated: String
 });
 const breakingNewsUnsubscribe= new mongoose.Schema({
     consoleScreen: String,
-    phoneNumber: String
+    phoneNumber: String,
+    dateCreated: String
 });
 const airtimeBalance = new mongoose.Schema({
    consoleScreen: String,
-   phoneNumber: String
+   phoneNumber: String,
+   dateCreated: String
 });
 const airtimeTopup= new mongoose.Schema({
     consoleScreen: String,
-    phoneNumber: String
+    phoneNumber: String,
+    dateCreated: String
 });
 const skizaSubscription = new mongoose.Schema({
     consoleScreen:String,
-    phoneNumber: String
+    phoneNumber: String,
+    dateCreated: String
+});
+const users = new mongoose.Schema({
+     phoneNumber: String,
+     dateCreated: String
 });
 
 const Welcome=mongoose.model('Welcome',welcomeSchema);
@@ -55,7 +79,12 @@ const BreakingNewsUnsubscribe=mongoose.model('BreakingNewsUnsubscribe',breakingN
 const AirtimeBalance=mongoose.model('AirtimeBalance',airtimeBalance);
 const AirtimeTopup=mongoose.model('AirtimeTopup',airtimeTopup);
 const SkizaSubscription=mongoose.model('SkizaSubscription',skizaSubscription);
+const Users=mongoose.model('Users',users);
 
+async function getUsers(phoneNumber) {
+   const records=Users.findOne({phoneNumber:phoneNumber});
+   return records;
+}
 
 app.post("/ussd",(req,res)=>{
     const {
@@ -68,9 +97,23 @@ app.post("/ussd",(req,res)=>{
 
     if (text == '') {
         // welcome console
+        getUsers(phoneNumber)
+        .then((response)=>{
+            if(response.length === 0){
+                const user= new Users({
+                    phoneNumber: phoneNumber,
+                    dateCreated:date
+                })
+                user.save()
+            }
+        })
+        .catch(()=>{
+            res.send("There was an error in user creation! ")
+        })
         const message = new Welcome({
             consoleScreen: "welcome console",
             phoneNumber: phoneNumber,
+            dateCreated:date
         })
         message.save();
         
@@ -85,6 +128,7 @@ app.post("/ussd",(req,res)=>{
         const message = new BreakingNews({
             consoleScreen: "breaking news console",
             phoneNumber: phoneNumber,
+            dateCreated:date
         })
         message.save();
 
@@ -97,6 +141,7 @@ app.post("/ussd",(req,res)=>{
         const message = new Airtime({
             consoleScreen: "airtime console",
             phoneNumber: phoneNumber,
+            dateCreated:date
         })
         message.save();
 
@@ -109,6 +154,7 @@ app.post("/ussd",(req,res)=>{
         const message = new Skiza({
             consoleScreen: "skiza console",
             phoneNumber: phoneNumber,
+            dateCreated:date
         })
         message.save();
 
@@ -120,6 +166,7 @@ app.post("/ussd",(req,res)=>{
         const message = new BreakingNewsSubscribe({
             consoleScreen: "breaking news subscribe console",
             phoneNumber: phoneNumber,
+            dateCreated:date
         })
         message.save();
 
@@ -130,6 +177,7 @@ app.post("/ussd",(req,res)=>{
         const message = new BreakingNewsUnsubscribe({
             consoleScreen: "breaking news unsubscribe console",
             phoneNumber: phoneNumber,
+            dateCreated:date
         })
         message.save();
 
@@ -140,6 +188,7 @@ app.post("/ussd",(req,res)=>{
         const message = new AirtimeBalance({
             consoleScreen: "airtime balance console",
             phoneNumber: phoneNumber,
+            dateCreated:date
         })
         message.save();
 
@@ -150,6 +199,7 @@ app.post("/ussd",(req,res)=>{
          const message = new AirtimeTopup({
             consoleScreen: "airtime topup console",
             phoneNumber: phoneNumber,
+            dateCreated:date
         })
         message.save();
 
@@ -160,6 +210,7 @@ app.post("/ussd",(req,res)=>{
         const message = new SkizaSubscription({
             consoleScreen: "skiza subscription console",
             phoneNumber: phoneNumber,
+            dateCreated:date
         })
         message.save();
 
