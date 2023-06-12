@@ -131,7 +131,7 @@ app.post("/ussd",(req,res)=>{
         
         response = `CON Welcome to media services. 
         Please select an option
-        1. Breaking news Subscription
+        1. Breaking News Subscription
         2. Airtime Top up
         3. Skiza Subscription`;
     }
@@ -159,7 +159,7 @@ app.post("/ussd",(req,res)=>{
 
         response = `CON 
         1.Show Balance
-        2.Airtime topup`;
+        2.Airtime Topup`;
     }
     if(text == '3') {
         // skiza console
