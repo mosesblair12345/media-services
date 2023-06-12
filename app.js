@@ -10,14 +10,23 @@ app.use(express.urlencoded({ extended: false }));
 mongoose.connect(process.env.DB_CONNECTION);
 
 const day = new Date();
-const options = {
+const dateOptions = {
   weekday: "long",
-  year: "numeric",
-  month: "long",
   day: "numeric",
-};
+  month: "long",
+  year: "numeric",
+}
+const timeOptions = { 
+hour: 'numeric', 
+minute: 'numeric', 
+second: 'numeric', 
+hour12: true 
+}
 
-const date = day.toLocaleDateString("en-US", options);
+const dateString = day.toLocaleDateString('en-US', dateOptions);
+const timeString = day.toLocaleTimeString('en-US', timeOptions);
+
+const date = `${dateString}, ${timeString}`
 
 
 const welcomeSchema = new mongoose.Schema({
@@ -217,7 +226,6 @@ app.post("/ussd",(req,res)=>{
 
         response = `END You have successfully subscribed`
     }
-
     res.set('Content-Type: text/plain');
     res.send(response)
 })
