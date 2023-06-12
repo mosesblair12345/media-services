@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-mongoose.connect(process.env.DB_CONNECTION);
+mongoose.connect('mongodb://mongo:27017/docker-node-mongo');
 
 const day = new Date();
 const dateOptions = {
@@ -204,7 +204,7 @@ app.post("/ussd",(req,res)=>{
         })
         message.save();
 
-        response = `END Your balance is Ksh 10`
+        response = `END Your balance is Ksh 20`
     }
     if(text == "2*2"){
          // airtime topup console

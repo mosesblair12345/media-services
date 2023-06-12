@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:18-alpine
 
 # working directory
 WORKDIR /usr/src/app
@@ -15,4 +15,4 @@ COPY . .
 # expose the API Port
 EXPOSE 3000
 
-CMD ["node", "app.js"]
+CMD ["npm", "start"]
