@@ -20,11 +20,13 @@ const timeOptions = {
 hour: 'numeric', 
 minute: 'numeric', 
 second: 'numeric', 
-hour12: true 
+hour12: true,
+timeZone: 'Africa/Nairobi'
 }
 
 const dateString = day.toLocaleDateString('en-KE', dateOptions);
-const timeString = day.toLocaleTimeString('en-KE', timeOptions);
+const formatter = new Intl.DateTimeFormat('en-KE', timeOptions);
+const timeString = formatter.format(now);
 
 const date = `${dateString}, ${timeString}`
 
