@@ -26,7 +26,7 @@ timeZone: 'Africa/Nairobi'
 
 const dateString = day.toLocaleDateString('en-KE', dateOptions);
 const formatter = new Intl.DateTimeFormat('en-KE', timeOptions);
-const timeString = formatter.format(now);
+const timeString = formatter.format(day);
 
 const date = `${dateString}, ${timeString}`
 
