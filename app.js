@@ -23,8 +23,8 @@ second: 'numeric',
 hour12: true 
 }
 
-const dateString = day.toLocaleDateString('en-US', dateOptions);
-const timeString = day.toLocaleTimeString('en-US', timeOptions);
+const dateString = day.toLocaleDateString('en-KE', dateOptions);
+const timeString = day.toLocaleTimeString('en-KE', timeOptions);
 
 const date = `${dateString}, ${timeString}`
 
